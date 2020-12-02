@@ -29,7 +29,8 @@ class AuthorResource extends JsonResource
             'books_count' => $this->books->count(),
             'books'       => $this->when(
                 ($request->route()->getName() == "authors.list") or
-                ($request->route()->getName() == "authors.show"),
+                ($request->route()->getName() == "authors.show") or
+                ($request->route()->getName() == "authors.search"),
                 BookResource::collection($this->books)),
         ];
     }
