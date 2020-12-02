@@ -14,7 +14,7 @@ class AuthController extends APIBaseController
     {
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return $this->sendError(['Wrong credentials']);
         }
 
@@ -22,8 +22,5 @@ class AuthController extends APIBaseController
 
         return $this->sendResponse($token);
     }
-    public function test(Request $request)
-    {
-        dd($request->route()->getName());
-    }
+
 }

@@ -25,19 +25,8 @@ class DemoUserSeeder extends Seeder
             'name'      => $faker->name,
             'email_verified_at' => now(),
         ]);
-//  for using OAuth passport
-//        // OAuth user for a passport
-//        \Laravel\Passport\Client::query()->create([
-//            'id'                     => 1,
-//            'name'                   => 'Laravel Password Grant Client',
-//            'secret'                 => 'CyQaejvE9Tq2ykXW1aCz4aYpxU8OEpJngkVWjpHj',
-//            'redirect'               => 'http://books.loc',
-//            'personal_access_client' => 0,
-//            'password_client'        => 1,
-//            'revoked'                => 0,
-//        ]);
+
         $user->createToken('main')->plainTextToken;
-//
-//        \Illuminate\Support\Facades\Artisan::call('passport:install');
+
     }
 }

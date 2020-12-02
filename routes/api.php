@@ -19,26 +19,26 @@ use App\Http\Controllers\BookController;
 //email: test@test.ru
 //password: 123123123
 Route::get('login',[AuthController::class,'login'])->name('auth.login');
-Route::get('test',[AuthController::class,'test'])->name('test');
 
 //page = page number
 //perpage
-Route::get('authors',[AuthorController::class,'index'])->name('authors.list');
+Route::middleware('auth:sanctum')->group(function (){
+    Route::get('authors',[AuthorController::class,'index'])->name('authors.list')->middleware('auth:sanctum');
 //search by: first_name, last_name
-Route::get('authors/search',[AuthorController::class,'search'])->name('authors.search');
-Route::get('authors/{id}',[AuthorController::class,'show'])->name('authors.show');
+    Route::get('authors/search',[AuthorController::class,'search'])->name('authors.search');
+    Route::get('authors/{id}',[AuthorController::class,'show'])->name('authors.show');
 //Route::post('authors',[AuthorController::class,'create'])->name('author.create');
-Route::post('authors',[AuthorController::class,'create'])->name('author.create');
-Route::patch('authors/{id}',[AuthorController::class,'update'])->name('author.update');
-Route::delete('authors/{id}',[AuthorController::class,'delete'])->name('author.delete');
+    Route::post('authors',[AuthorController::class,'create'])->name('author.create');
+    Route::patch('authors/{id}',[AuthorController::class,'update'])->name('author.update');
+    Route::delete('authors/{id}',[AuthorController::class,'delete'])->name('author.delete');
 
 //page = page number
 //perpage
-Route::get('books',[BookController::class,'index'])->name('books.list');
+    Route::get('books',[BookController::class,'index'])->name('books.list');
 //search by: name, description
-Route::get('books/search',[BookController::class,'search'])->name('books.search');
-Route::get('books/{id}',[BookController::class,'show'])->name('books.show');
-Route::post('books',[BookController::class,'create'])->name('book.create');
-Route::patch('books/{id}',[BookController::class,'update'])->name('book.update');
-Route::delete('books/{id}',[BookController::class,'delete'])->name('book.delete');
-
+    Route::get('books/search',[BookController::class,'search'])->name('books.search');
+    Route::get('books/{id}',[BookController::class,'show'])->name('books.show');
+    Route::post('books',[BookController::class,'create'])->name('book.create');
+    Route::patch('books/{id}',[BookController::class,'update'])->name('book.update');
+    Route::delete('books/{id}',[BookController::class,'delete'])->name('book.delete');
+});

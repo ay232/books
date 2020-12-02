@@ -29,11 +29,11 @@ class AuthorController extends APIBaseController
      */
     public function create(AuthorRequest $request)
     {
-        $uniqueAuthors = Author::where('first_name',$request->get('first_name'))
-            ->where('last_name',$request->get('last_name'))
-            ->where('birth_date',$request->get('birth_date'))
+        $uniqueAuthors = Author::where('first_name', $request->get('first_name'))
+            ->where('last_name', $request->get('last_name'))
+            ->where('birth_date', $request->get('birth_date'))
             ->get()->count();
-        if ($uniqueAuthors>0){
+        if ($uniqueAuthors > 0) {
             return $this->sendError('The same author is exists in base, you have to user update method');
         }
 
@@ -56,7 +56,7 @@ class AuthorController extends APIBaseController
      * @param AuthorRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(AuthorRequest $request,$id)
+    public function update(AuthorRequest $request, $id)
     {
         $author = Author::find($id);
         $author->fill($request->except('Key'));
@@ -68,31 +68,35 @@ class AuthorController extends APIBaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Author  $author
+     * @param \App\Models\Author $author
      * @return \Illuminate\Http\Response
      */
     public function delete($id)
     {
         $author = Author::find($id);
         $deleted = AuthorResource::make($author);
-        if ($author){
+        if ($author) {
             $author->delete($id);
-            return $this->sendResponse($deleted,'Author was deleted');
+            return $this->sendResponse($deleted, 'Author was deleted');
         }
-        return  $this->sendError(null,'Author ID not found');
+        return $this->sendError(null, 'Author ID not found');
 
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function search(Request $request)
     {
         $perPage = $request->has('per_page') ? $request->get('per_page') : 10;
 
-        $authors = Author::when($request->has('first_name'),function ($q) use($request){
-            return $q->where('first_name','like',"%{$request->first_name}%");
+        $authors = Author::when($request->has('first_name'), function ($q) use ($request) {
+            return $q->where('first_name', 'like', "%{$request->first_name}%");
         })
-            ->when($request->has('last_name'),function ($q) use($request){
-            return $q->orwhere('last_name','like',"%{$request->last_name}%");
-        })->paginate($perPage);
+            ->when($request->has('last_name'), function ($q) use ($request) {
+                return $q->orwhere('last_name', 'like', "%{$request->last_name}%");
+            })->paginate($perPage);
 
         return $this->sendResponse(AuthorCollectionResource::make($authors));
     }

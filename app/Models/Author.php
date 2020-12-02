@@ -5,19 +5,13 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Author extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $casts = [
-        'birth_date'=>'date:d-m-Y',
-        'death_date'=>'date:d-m-Y',
-        'created_at'=>'datetime:d-m-Y',
-        'updated_at'=>'datetime:d-m-Y',
-    ];
-    //protected $fillable=[];
 
     /**
      * @param $value
@@ -54,8 +48,10 @@ class Author extends Model
     }
 
 
-
-    public function books()
+    /**
+     * @return BelongsToMany
+     */
+    public function books() : BelongsToMany
     {
         return $this->belongsToMany(Book::class,Author_Book::class);
     }
